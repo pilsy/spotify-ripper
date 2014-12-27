@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Mark Brouch",
+  "author": "Mark Brouch <mark.brouch@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
