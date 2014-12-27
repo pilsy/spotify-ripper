@@ -2,8 +2,10 @@ spotify-ripper
 ==============
 Flags:
 
-` --username` Spotify Username
+`--username` Spotify Username
 
-` --password` Spotify Password
+`--password` Spotify Password
 
-` --uri` Spotify URI (Currently only works with Track and Album)
+`--uri` Spotify URI (Currently only works with Track and Album)
+
+`--output` Directory to output file (Default is `output`)
