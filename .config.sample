@@ -1,0 +1,6 @@
+// Rename to .config
+module.exports = {
+	"username": "aaronrodgers",
+	"password": "gopackgo",
+	"output": "output"
+}

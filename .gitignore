@@ -2,3 +2,4 @@ output
 .config
 node_modules
 tmp
+.DS_Store
