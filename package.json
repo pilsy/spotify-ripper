@@ -1,13 +1,17 @@
 {
   "name": "spotify-ripper",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Mark Brouch",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markbrouch/spotify-ripper"
+  },
   "dependencies": {
     "async": "^0.9.0",
     "ffmetadata": "^1.3.0",
