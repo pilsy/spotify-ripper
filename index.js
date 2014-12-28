@@ -12,53 +12,63 @@ var outputDir = minimist.output || config.output;
 var username = minimist.username || config.username;
 var password = minimist.password || config.password;
 
-Spotify.login(username, password, function (err, spotify) {
-  if (err) throw err;
+var rip = function(uri, username, password, outputDir) {
+  outputDir = outputDir || config.output;
+  username = username || config.username;
+  password = password || config.password;
 
-  console.log(Spotify.uriType(uri));
-  switch (Spotify.uriType(uri)) {
-    case 'track':
-      console.log('Fetching track information for %s.', uri);
+  Spotify.login(username, password, function (err, spotify) {
+    if (err) throw err;
 
-      download(spotify, uri, outputDir, function(err) {
-        if (err) throw err;
-        spotify.disconnect();
-      });
-      break;
-    case 'album':
-      console.log('Fetching album information for %s.', uri);
+    console.log(Spotify.uriType(uri));
+    switch (Spotify.uriType(uri)) {
+      case 'track':
+        console.log('Fetching track information for %s.', uri);
 
-      spotify.get(uri, function (err, album) {
-        if (err) throw err;
-
-        // first get the Track instances for each disc
-        var tracks = [];
-        album.disc.forEach(function (disc) {
-          if (!Array.isArray(disc.track)) return;
-          tracks.push.apply(tracks, disc.track);
-        });
-
-        async.mapSeries(tracks, function(track, callback) {
-          download(spotify, track.uri, outputDir, callback)
-        }, function(err, results) {
+        download(spotify, uri, outputDir, function(err) {
           if (err) throw err;
           spotify.disconnect();
         });
-      });
-      break;
-    case 'artist':
-      console.log('Fetching artist information for %s.', uri);
+        break;
+      case 'album':
+        console.log('Fetching album information for %s.', uri);
 
-      spotify.get(uri, function (err, artist) {
-        if (err) throw err;
+        spotify.get(uri, function (err, album) {
+          if (err) throw err;
 
-        console.log(util.inspect(artist.albumGroup, false, null));
-        console.log(Spotify.gid2id(artist.albumGroup[0].album[0].gid));
-      });
+          // first get the Track instances for each disc
+          var tracks = [];
+          album.disc.forEach(function (disc) {
+            if (!Array.isArray(disc.track)) return;
+            tracks.push.apply(tracks, disc.track);
+          });
 
-      break;
-    default:
-      console.log("This URI type is not supported.");
-      spotify.disconnect();
-  }
-});
+          async.mapSeries(tracks, function(track, callback) {
+            download(spotify, track.uri, outputDir, callback)
+          }, function(err, results) {
+            if (err) throw err;
+            spotify.disconnect();
+          });
+        });
+        break;
+      case 'artist':
+        console.log('Fetching artist information for %s.', uri);
+
+        spotify.get(uri, function (err, artist) {
+          if (err) throw err;
+
+          console.log(util.inspect(artist.albumGroup, false, null));
+          console.log(Spotify.gid2id(artist.albumGroup[0].album[0].gid));
+        });
+
+        break;
+      default:
+        console.log("This URI type is not supported.");
+        spotify.disconnect();
+    }
+  });
+};
+
+rip(uri, username, password, outputDir);
+
+module.exports = rip;

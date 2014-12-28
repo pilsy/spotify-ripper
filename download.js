@@ -17,6 +17,9 @@ module.exports = function(spotify, uri, outputDir, callback) {
       album: function (callback) {
         track.album.get(function (err, album) {
           if (err) throw err;
+          mkdirp('tmp/', function(err) {
+            if (err) throw err;
+          });
           var coverImagePath = 'tmp/' + Spotify.gid2id(track.gid) + '.jpg';
           var albumCoverUri = album.cover[album.cover.length - 1].uri
 
