@@ -1,9 +1,14 @@
 var async = require('async');
-var config = require('./.config');
 var download = require('./download');
 var minimist = require('minimist')(process.argv.slice(2));
 var Spotify = require('spotify-web');
 var util = require('util');
+
+try {
+  var config = require('./.config');
+} catch (ex) {
+  console.warn(ex);
+}
 
 var uri = minimist.uri;
 var outputDir = minimist.output || config.output;
